@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Journal App</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Journal App</string>
+    <string name="nav_header_subtitle">username@domain.com</string>
+    <string name="nav_header_desc">Profile header</string>
+    <string name="action_about">About</string>
+    <string name="save">Save</string>
+    <string name="journal_content">Journal Content</string>
+    <string name="feelings">Feelings</string>
+    <string name="thoughts">Thoughts</string>
+    <string name="add_journal">Add Journal</string>
+    <string name="edit_journal">Edit Journal</string>
+    <string name="updated">Updated</string>
+    <string name="added">Added</string>
+    <string name="journal_type">journal type</string>
+    <string name="journals_list_title">%s Journals</string>
+    <string name="edit">Edit</string>
+    <string name="journal">Journal</string>
+    <string name="logout">Logout</string>
+    <string name="exit_journal">Exit Journal</string>
+    <string name="new_journal">New Journal</string>
+    <string name="edited_time_format">Edited %s</string>
+    <string name="created_time_format">Created %s</string>
+    <string name="my_thoughts">My thoughts</string>
+    <string name="my_feelings">My feelings</string>
+    <string name="about_app_title">About</string>
+    <string name="about_app_description">This App used to save Journals is project for my ALC 3.0 Google Scholarship. Magnus Lator</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="journal_title">Journal Title</string>
+    <string name="what_describes_your_journal">What describes your journal?</string>
+</resources>
