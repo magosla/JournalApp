@@ -3,7 +3,6 @@ package com.naijaplanet.magosla.android.journalapp.viewmodels;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -12,7 +11,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.naijaplanet.magosla.android.journalapp.data.FirebaseLiveData;
 import com.naijaplanet.magosla.android.journalapp.models.JournalsItem;
 import com.naijaplanet.magosla.android.journalapp.utilities.FirebaseUtil;
-import com.naijaplanet.magosla.android.journalapp.utilities.Values;
 
 import java.util.ArrayList;
 import java.util.List;
