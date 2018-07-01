@@ -32,6 +32,7 @@ public class JournalsActivityTest {
             JournalsActivity.class);
 
     /**
+     * the journal list
      * works if the user is logged in
      */
     @Test

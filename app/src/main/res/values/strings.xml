@@ -36,4 +36,7 @@
     <string name="msg_delete_confirm">Are you sure you want this deleted?</string>
     <string name="title_delete_confirm">Confirm Delete</string>
     <string name="msg_journal_deleted">Journal deleted</string>
+    <string name="msg_cannot_connect">Can not connect at the moment</string>
+    <string name="msg_no_network_available">Network unavailable, Check connection and try again</string>
+    <string name="action_retry">Retry</string>
 </resources>

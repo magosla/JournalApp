@@ -11,7 +11,7 @@ First you would need to [Download](https://github.com/magosla/JournalApp/blob/ma
 To run the app for the first time prior to being signed-in you must have an internet connection for the app to run
 
 ####Demo account
-Select signin by email and use the signin credentials below
+Select sign in by email and use the sign in credentials below:
 ````
 Email: demo@journalapp.com
 ````
@@ -21,42 +21,15 @@ Password: demopass
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
+To install the app, first download the apk file to your device with the link provided above, 
+then open the file from your device and follow the installation steps provided by your device application installer.
+Also, ensure that you have enabled your application to install application from unknown source
 
 ## Running the tests
-Basic UI test has been written Espresso, but the result hasn't been consistent because the Activties are behind a login  
+Basic UI test has been written Espresso, but the result has'nt been consistent because the Activities are behind a login  
 
 Explain how to run the automated tests for this system
 
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
 
 ## Deployment
 

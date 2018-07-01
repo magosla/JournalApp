@@ -21,11 +21,17 @@ public class JournalActivityTest {
     public ActivityTestRule<JournalActivity> mActivityRule = new ActivityTestRule<>(
             JournalActivity.class);
 
+    /**
+     * If a journal is being viewed
+     */
     @Test
     public void testView(){
         onView(withId(R.id.text_datetime)).check(matches(isDisplayed()));
     }
 
+    /**
+     * If the journal being viewed has been edited
+     */
     @Test
     public void journalHasBeenEdited(){
         onView(withId(R.id.text_edit_timestamp)).check(matches(isDisplayed()));
