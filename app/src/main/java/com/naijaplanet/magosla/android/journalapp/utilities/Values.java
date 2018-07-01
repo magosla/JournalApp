@@ -90,6 +90,8 @@ public class Values {
             user.setEmail(pref.getString(PREF_USER_EMAIL,""));
             user.setName(pref.getString(PREF_USER_NAME,""));
             user.setPhotoUrl(pref.getString(PREF_USER_PHOTO_URL,""));
+            // return a null user if the id is empty
+            if (user.getId().isEmpty()) user = null;
         }
         return user;
     }
