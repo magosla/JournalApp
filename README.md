@@ -1,18 +1,23 @@
 # Journal App
 
-This is an Android application that enable its users pen down their thoughts and feelings 
+This is an Android application that enable its users pen down their thoughts and feelings. It is a portable journal for everyday use 
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+First you would need to [Download](https://github.com/magosla/JournalApp/blob/master/apk/app-release.apk) the app and install to your Android device These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
 
 What things you need to install the software and how to install them
 
-```
-Give examples
-```
+####Demo account
+Select signin by email and use the signin credentials below
+````
+Email: demo@journalapp.com
+````
+````
+Password: demopass
+````
 
 ### Installing
 
@@ -33,6 +38,7 @@ until finished
 End with an example of getting some data out of the system or using it for a little demo
 
 ## Running the tests
+Basic UI test has been written Espresso, but the result hasn't been consistent because the Activties are behind a login  
 
 Explain how to run the automated tests for this system
 
@@ -54,7 +60,7 @@ Give an example
 
 ## Deployment
 
-An APK file can be found in the apk folder in the root directory
+Must be deployed to a Device running on Android Operating System. The APK file for the app can be found in the apk folder of the root directory. [Download apk file](https://github.com/magosla/JournalApp/blob/master/apk/app-release.apk) 
 
 ## Built With
 
