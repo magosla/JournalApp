@@ -5,17 +5,17 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_create"
+            android:id="@+id/drawer_create"
             android:icon="@android:drawable/ic_input_add"
-            android:title="@string/new_journal"/>
+            android:title="@string/action_new_journal"/>
     </group>
 
-    <item android:title="@string/exit_journal">
+    <item android:title="@string/action_exit_journal">
         <menu>
             <item
-                android:id="@+id/nav_logout"
+                android:id="@+id/drawer_logout"
                 android:icon="@android:drawable/ic_lock_power_off"
-                android:title="@string/logout" />
+                android:title="@string/action_logout" />
         </menu>
     </item>
 

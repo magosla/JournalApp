@@ -21,11 +21,11 @@ import java.util.Locale;
 
 public class JournalsAdapter extends RecyclerView.Adapter<JournalsAdapter.JournalViewHolder> {
 
-    private Context context;
-    private ItemListeners mItemListeners;
+    private final Context context;
+    private final ItemListeners mItemListeners;
     private List<JournalsItem> mJournals;
 
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat(Values.DATE_FORMAT, Locale.getDefault());
+    private final SimpleDateFormat dateFormatter = new SimpleDateFormat(Values.DATE_FORMAT, Locale.getDefault());
 
     public interface ItemListeners {
         void onItemClickListener(View v);
@@ -44,7 +44,7 @@ public class JournalsAdapter extends RecyclerView.Adapter<JournalsAdapter.Journa
     @Override
     public JournalViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // inflate the layout view
-        // The viewType is begin used as the resource ID because getItemVeiwType is overriden to return the view layout id
+        // The viewType is begin used as the resource ID because getItemViewType is overriden to return the view layout id
         View view = LayoutInflater.from(context)
                 .inflate(viewType, parent, false);
 
@@ -85,17 +85,17 @@ public class JournalsAdapter extends RecyclerView.Adapter<JournalsAdapter.Journa
 
     class JournalViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener, View.OnCreateContextMenuListener
     {
-        private TextView mTitleView;
-        private TextView mTimestampView;
-        private TextView mJournalTypeView;
-        private ImageView mTypeImageView;
+        private final TextView mTitleView;
+        private final TextView mTimestampView;
+        private final TextView mJournalTypeView;
+        private final ImageView mTypeImageView;
 
         private JournalViewHolder(View itemView) {
             super(itemView);
-            mTitleView = itemView.findViewById(R.id.tv_title);
-            mTimestampView = itemView.findViewById(R.id.tv_datetime);
-            mTypeImageView = itemView.findViewById(R.id.iv_journal_type);
-            mJournalTypeView = itemView.findViewById(R.id.tv_journal_type);
+            mTitleView = itemView.findViewById(R.id.text_title);
+            mTimestampView = itemView.findViewById(R.id.text_datetime);
+            mTypeImageView = itemView.findViewById(R.id.image_journal_type);
+            mJournalTypeView = itemView.findViewById(R.id.text_journal_type);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
            // context.registerForContextMenu(itemView);
@@ -133,7 +133,7 @@ public class JournalsAdapter extends RecyclerView.Adapter<JournalsAdapter.Journa
             return mItemListeners.onItemLongClickListener(v);
         }
 
-        // TODO - Implement a Context menu instead of directly editing after a long click
+        // TODO: - Implement a Context menu instead of directly editing after a long click
         @SuppressWarnings("unused")
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {

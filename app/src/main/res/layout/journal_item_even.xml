@@ -1,43 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/journal_item_even_selector"
     android:id="@+id/journal_item_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/journal_item_even_selector">
 
     <ImageView
-        android:id="@+id/iv_journal_type"
+        android:id="@+id/image_journal_type"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:layout_marginRight="5dp"
         android:layout_marginEnd="5dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="5dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
         android:contentDescription="@string/journal_type"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:srcCompat="@drawable/ic_assignment_even" />
 
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/text_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:textSize="16sp"
-        android:textColor="@color/color_title"
-        android:textStyle="bold"
-        tools:text="This is the journal title"
         android:ellipsize="marquee"
+        android:textColor="@color/color_title"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/iv_journal_type"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintStart_toEndOf="@+id/image_journal_type"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="This is the journal title" />
 
 
     <ImageView
@@ -46,30 +44,30 @@
         android:layout_height="12sp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tv_title"
+        app:layout_constraintStart_toStartOf="@+id/text_title"
         app:srcCompat="@drawable/ic_access_time"
         tools:ignore="ContentDescription" />
 
     <TextView
-        android:id="@+id/tv_datetime"
+        android:id="@+id/text_datetime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
         android:layout_marginLeft="2dp"
         android:layout_marginStart="2dp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/imageView2"
         app:layout_constraintLeft_toRightOf="@+id/imageView2"
         app:layout_constraintTop_toBottomOf="@+id/imageView2"
         tools:text="TimeStamp of" />
 
     <TextView
-        android:id="@+id/tv_journal_type"
+        android:id="@+id/text_journal_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:textSize="12sp"
-        tools:text="THOUGHTS"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_datetime"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/text_datetime"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:text="THOUGHTS" />
 </android.support.constraint.ConstraintLayout>

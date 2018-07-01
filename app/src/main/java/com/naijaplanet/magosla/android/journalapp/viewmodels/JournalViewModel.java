@@ -17,12 +17,13 @@ import com.naijaplanet.magosla.android.journalapp.utilities.Values;
  */
 public class JournalViewModel extends ViewModel {
 
-    private DatabaseReference mDatabaseRef;
+    private final DatabaseReference mDatabaseRef;
     private ValueEventListener mValueEventListener;
 
+    @SuppressWarnings("SpellCheckingInspection")
     private FirebaseLiveData<Journal> mLiveData;
 
-    @SuppressWarnings("WeakerAccess")
+    @SuppressWarnings({"WeakerAccess", "SpellCheckingInspection"})
     public JournalViewModel(String userId, String journalKey){
         // the path to the data in firebase, which is determined by the
         // App User's ID and the journalKey
@@ -32,6 +33,13 @@ public class JournalViewModel extends ViewModel {
         mDatabaseRef = FirebaseUtil.getFirebaseDatabase().getReference(databasePath);
 
         configureListener();
+    }
+
+    /**
+     * Delete the entry
+     */
+    public void deleteEntry(){
+        mDatabaseRef.getRef().removeValue();
     }
 
     /**

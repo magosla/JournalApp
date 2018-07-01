@@ -2,13 +2,16 @@ package com.naijaplanet.magosla.android.journalapp;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.naijaplanet.magosla.android.journalapp.databinding.ActivityJournalBinding;
 import com.naijaplanet.magosla.android.journalapp.models.Journal;
@@ -19,9 +22,9 @@ import com.naijaplanet.magosla.android.journalapp.viewmodels.JournalViewModel;
 import com.naijaplanet.magosla.android.journalapp.viewmodels.JournalViewModelFactory;
 
 public class JournalActivity extends AppCompatActivity {
-    private User mUser;
     private String mJournalKey;
     private ActivityJournalBinding mJournalBinding;
+    private User mUser;
 
 
     @Override
@@ -34,10 +37,8 @@ public class JournalActivity extends AppCompatActivity {
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // get the user object
-        mUser = getIntent().getParcelableExtra(Values.USER_INTENT_DATA_KEY);
         // get if provided the key that identifies the journal
-        String journalKey = getIntent().getStringExtra(Values.INTENT_JOURNAL_ID_KEY);
+        String journalKey = getIntent().getStringExtra(Values.EXTRA_JOURNAL_KEY);
         mJournalKey = journalKey.equals(Values.JOURNAL_ID_NONE) ? "" : journalKey;
 
         initializeUiComponents();
@@ -45,19 +46,47 @@ public class JournalActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.journal, menu);
+        getMenuInflater().inflate(R.menu.activity_journal, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.action_journal_edit:
-                ActivityUtil.launchEditor(JournalActivity.this, mUser, mJournalKey);
+        switch (item.getItemId()) {
+            case R.id.menu_delete:
+                new AlertDialog.Builder(this)
+                        .setTitle(R.string.title_delete_confirm)
+                        .setMessage(R.string.msg_delete_confirm)
+                        .setNegativeButton(R.string.action_no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setPositiveButton(R.string.action_yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                delete();
+                            }
+                        }).show();
                 return true;
-                default:
-                    return super.onOptionsItemSelected(item);
+            case R.id.menu_edit:
+                ActivityUtil.launchEditor(JournalActivity.this, mJournalKey);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
+    }
+
+    /**
+     * deletes the journal from database
+     */
+    private void delete() {
+        ViewModelProviders.
+                of(this, new JournalViewModelFactory(mUser.getId(), mJournalKey))
+                .get(JournalViewModel.class).deleteEntry();
+        Toast.makeText(this, R.string.msg_journal_deleted, Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     /**
@@ -65,6 +94,11 @@ public class JournalActivity extends AppCompatActivity {
      */
     private void initializeUiComponents() {
         mJournalBinding = DataBindingUtil.setContentView(this, R.layout.activity_journal);
+
+        // get the user object
+        //User user = getIntent().getParcelableExtra(Values.EXTRA_USER);
+        // get the user object from preference
+        mUser = Values.getUserFromPreference(this);
 
         final JournalViewModel journalViewModel = ViewModelProviders.
                 of(this, new JournalViewModelFactory(mUser.getId(), mJournalKey))
@@ -83,27 +117,30 @@ public class JournalActivity extends AppCompatActivity {
 
     /**
      * Update the Views with the data provided from the ViewModel
+     *
      * @param journal the Journal object
      */
     private void updateUi(@Nullable Journal journal) {
-        if(journal == null)return;
+        if (journal == null) return;
 
-        mJournalBinding.tvTitle.setText(journal.getTitle());
-        mJournalBinding.tvContent.setText(journal.getContent());
-        mJournalBinding.tvDatetime.setText(
-                getString(R.string.created_time_format,Values.getFormattedDate(journal.getTimestamp()))
+        mJournalBinding.textTitle.setText(journal.getTitle());
+        mJournalBinding.textContent.setText(journal.getContent());
+        mJournalBinding.textDatetime.setText(
+                getString(R.string.created_time_format
+                        , Values.getFormattedDate(journal.getTimestamp(), Values.DATE_TIME_FORMAT))
         );
         // only include the date this item was edited if it was actually edited
-        if(journal.getEditTimestamp() > 0) {
-            mJournalBinding.tvEditTimestamp.setVisibility(View.VISIBLE);
-            mJournalBinding.tvEditTimestamp.setText(
-                    getString(R.string.edited_time_format, Values.getFormattedDate(journal.getEditTimestamp()))
+        if (journal.getEditTimestamp() > 0) {
+            mJournalBinding.textEditTimestamp.setVisibility(View.VISIBLE);
+            mJournalBinding.textEditTimestamp.setText(
+                    getString(R.string.edited_time_format
+                            , Values.getFormattedDate(journal.getEditTimestamp(), Values.DATE_TIME_FORMAT))
             );
-        }else{
-            mJournalBinding.tvEditTimestamp.setVisibility(View.GONE);
+        } else {
+            mJournalBinding.textEditTimestamp.setVisibility(View.GONE);
         }
         String jType = journal.getType().equals("FEELINGS") ?
-                getString(R.string.my_feelings):getString(R.string.my_thoughts);
-        mJournalBinding.tvJournalType.setText(jType);
+                getString(R.string.my_feelings) : getString(R.string.my_thoughts);
+        mJournalBinding.textJournalType.setText(jType);
     }
 }

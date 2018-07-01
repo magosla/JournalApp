@@ -7,6 +7,7 @@ import com.google.firebase.database.FirebaseDatabase;
 /**
  * This class provides helper methods for Firebase
  */
+@SuppressWarnings("SpellCheckingInspection")
 public class FirebaseUtil {
     private static FirebaseDatabase mDatabase;
 
@@ -17,7 +18,7 @@ public class FirebaseUtil {
     public static FirebaseDatabase getFirebaseDatabase(){
         Log.d("FirebaseUtil", "Requesting FirebaseDatabase instance");
 
-        // don't initialize if previously intialized
+        // don't initialize if previously initialized
         if(mDatabase == null){
             mDatabase = FirebaseDatabase.getInstance();
             mDatabase.setPersistenceEnabled(true);

@@ -22,9 +22,10 @@ import java.util.List;
  */
 public class JournalsViewModel extends ViewModel {
 
-    private DatabaseReference mDatabaseRef;
+    private final DatabaseReference mDatabaseRef;
     private ValueEventListener mValueEventListener;
 
+    @SuppressWarnings("SpellCheckingInspection")
     private FirebaseLiveData<List<JournalsItem>> mLiveData;
 
     @SuppressWarnings("WeakerAccess")
@@ -47,7 +48,7 @@ public class JournalsViewModel extends ViewModel {
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    // TODO - Use Executor
+                    // TODO: - Use Executor instead of Thread
                     new Thread(
                             new Runnable() {
                                 @Override

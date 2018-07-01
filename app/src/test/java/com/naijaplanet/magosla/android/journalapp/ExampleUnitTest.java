@@ -1,4 +1,4 @@
-package com.naijaplanet.magosla.android.tinyjournal;
+package com.naijaplanet.magosla.android.journalapp;
 
 import org.junit.Test;
 

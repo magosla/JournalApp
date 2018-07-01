@@ -12,10 +12,10 @@ import com.google.firebase.database.ValueEventListener;
 public class FirebaseLiveData<T> extends LiveData<T> {
     private final static String TAG = "FirebaseLiveData";
 
-    private ValueEventListener mValueEventListener;
-    private ChildEventListener mChildEventListener;
+    private final ValueEventListener mValueEventListener;
+    private final ChildEventListener mChildEventListener;
 
-    private Query mQuery;
+    private final Query mQuery;
 
     private boolean mPendingListenerDetach = false;
     private final Handler mListenerDetachHandler = new Handler();

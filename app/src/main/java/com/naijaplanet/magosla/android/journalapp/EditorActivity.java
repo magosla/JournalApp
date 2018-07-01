@@ -2,6 +2,7 @@ package com.naijaplanet.magosla.android.journalapp;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.databinding.DataBindingUtil;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,12 +12,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
+import com.naijaplanet.magosla.android.journalapp.databinding.ActivityEditorBinding;
 import com.naijaplanet.magosla.android.journalapp.models.Journal;
 import com.naijaplanet.magosla.android.journalapp.models.JournalsItem;
 import com.naijaplanet.magosla.android.journalapp.models.User;
@@ -27,12 +26,8 @@ import com.naijaplanet.magosla.android.journalapp.viewmodels.JournalViewModel;
 import com.naijaplanet.magosla.android.journalapp.viewmodels.JournalViewModelFactory;
 
 public class EditorActivity extends AppCompatActivity {
-    public final static String TAG = "EditorActivity";
+    private final static String TAG = "EditorActivity";
 
-    private EditText mTitleEditText, mContentEditText;
-    private RadioGroup mJournalTypeRadioGroup;
-    private RadioButton mFeelingsRadioButton;
-    private RadioButton mThoughtsRadioButton;
     private MenuItem mSaveMenuItem;
 
     // the key that identifies the journal if provided
@@ -44,6 +39,8 @@ public class EditorActivity extends AppCompatActivity {
     // the journal object
     private Journal mJournal;
 
+    private ActivityEditorBinding mEditor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,9 +48,18 @@ public class EditorActivity extends AppCompatActivity {
         // try to enable activity change transitions if supported
         ActivityUtil.enableTransition(this);
 
-        mUser = getIntent().getParcelableExtra(Values.USER_INTENT_DATA_KEY);
-        String journalId = getIntent().getStringExtra(Values.INTENT_JOURNAL_ID_KEY);
-        mJournalKey = journalId.equals(Values.JOURNAL_ID_NONE) ? "" : journalId;
+        //mUser = getIntent().getParcelableExtra(Values.EXTRA_USER);
+        // get the user object stored in shared preference
+        mUser = Values.getUserFromPreference(this);
+        // if we encounter an empty Userid, we should sign-out
+        if (mUser == null || mUser.getId().isEmpty()) {
+            ActivityUtil.signOut(this);
+            return;
+        }
+
+        // get the journalkey passed to the intent
+        String journalKey = getIntent().getStringExtra(Values.EXTRA_JOURNAL_KEY);
+        mJournalKey = journalKey.equals(Values.JOURNAL_ID_NONE) ? "" : journalKey;
 
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -64,15 +70,15 @@ public class EditorActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.editor, menu);
-        mSaveMenuItem = menu.findItem(R.id.action_journal_save);
+        getMenuInflater().inflate(R.menu.activity_editor, menu);
+        mSaveMenuItem = menu.findItem(R.id.menu_save);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_journal_save:
+            case R.id.menu_save:
                 saveJournal();
                 return true;
             case android.R.id.home:
@@ -87,18 +93,14 @@ public class EditorActivity extends AppCompatActivity {
      * Initialize the view components for this activity
      */
     private void initializeUiComponents() {
-        setContentView(R.layout.activity_editor);
+        mEditor = DataBindingUtil.setContentView(this, R.layout.activity_editor);
+        //setContentView(R.layout.activity_editor);
         setTitle(getString(mJournalKey.isEmpty() ? R.string.add_journal : R.string.edit_journal));
 
-        mTitleEditText = findViewById(R.id.et_title);
-        mContentEditText = findViewById(R.id.et_content);
-        mJournalTypeRadioGroup = findViewById(R.id.rg_type);
-        mThoughtsRadioButton = findViewById(R.id.rb_thought);
-        mFeelingsRadioButton = findViewById(R.id.rb_feelings);
 
         // key track of text inputted to this field to determine if the save
         // button can be enabled
-        mTitleEditText.addTextChangedListener(new TextWatcher() {
+        mEditor.editTitle.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -114,7 +116,7 @@ public class EditorActivity extends AppCompatActivity {
         });
         // key track of text inputted to this field to determine if the save
         // button can be enabled
-        mContentEditText.addTextChangedListener(new TextWatcher() {
+        mEditor.editContent.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -159,10 +161,10 @@ public class EditorActivity extends AppCompatActivity {
      * Update the input fields from the journal entry retrieved from the database
      */
     private void updateFields() {
-        if(mJournal == null) return;
-
-        mTitleEditText.setText(mJournal.getTitle());
-        mContentEditText.setText(mJournal.getContent());
+        Log.d(TAG, "found " + mJournal.getTitle());
+        if (mJournal == null) return;
+        mEditor.editTitle.setText(mJournal.getTitle());
+        mEditor.editContent.setText(mJournal.getContent());
         // make the journal type radio item selected
         checkSelectedType(mJournal.getType());
         updateSaveButtonState();
@@ -172,9 +174,11 @@ public class EditorActivity extends AppCompatActivity {
      * Toggles the Enabled state of the save button
      */
     private void updateSaveButtonState() {
+
+        // see if we can make the save menu item enabled
         if (mSaveMenuItem != null) {
             mSaveMenuItem.setEnabled(
-                    mTitleEditText.getText().toString().trim().length() > 0 && mContentEditText.getText()
+                    mEditor.editTitle.getText().toString().trim().length() > 0 && mEditor.editContent.getText()
                             .toString().trim().length() > 0 && isJournalTypeSelected()
 
             );
@@ -186,7 +190,8 @@ public class EditorActivity extends AppCompatActivity {
      *
      * @param view the radio item
      */
-    public void onRadioButtonClicked(View view) {
+    @SuppressWarnings("SpellCheckingInspection")
+    public void onRadioButtonClicked(@SuppressWarnings("unused") View view) {
         // Check which radio button was clicked
         updateSaveButtonState();
     }
@@ -194,11 +199,11 @@ public class EditorActivity extends AppCompatActivity {
     /**
      * Save the journal to database
      */
-    public void saveJournal() {
+    private void saveJournal() {
 
         final DatabaseReference userJournalDatabaseRef =
                 FirebaseUtil.getFirebaseDatabase().getReference()
-                .child(String.format("%s/%s", Values.JOURNAL_DATABASE_PATH, mUser.getId()));
+                        .child(String.format("%s/%s", Values.JOURNAL_DATABASE_PATH, mUser.getId()));
 
         DatabaseReference ref;
         if (mJournal == null) {
@@ -212,18 +217,22 @@ public class EditorActivity extends AppCompatActivity {
             ref = userJournalDatabaseRef.child(mJournalKey);
             mJournal.setEditTimestamp(Values.getCurrentTime());
         }
-        mJournal.setTitle(mTitleEditText.getText().toString().trim());
-        mJournal.setContent(mContentEditText.getText().toString().trim());
+        mJournal.setTitle(mEditor.editTitle.getText().toString().trim());
+        mJournal.setContent(mEditor.editContent.getText().toString().trim());
         mJournal.setType(getSelectedJournalType());
 
         ref.setValue(mJournal);
+        saveDone();
+    }
 
-
+    /**
+     * called when the journal entry has been saved
+     */
+    private void saveDone() {
         Toast.makeText(this, String.format("%s %s", mJournal.getTitle(),
                 !mJournalKey.isEmpty() ? getString(R.string.updated) :
                         getString(R.string.added)), Toast.LENGTH_SHORT).show();
         finish();
-
     }
 
     /**
@@ -232,11 +241,12 @@ public class EditorActivity extends AppCompatActivity {
      * @return true if an item is selected
      */
     private boolean isJournalTypeSelected() {
-        return mJournalTypeRadioGroup.getCheckedRadioButtonId() != -1;
+        return mEditor.radioGroupType.getCheckedRadioButtonId() != -1;
     }
 
     /**
-     *  Checks the radio button from the Journal type radio group
+     * Checks the radio button from the Journal type radio group
+     *
      * @param selectedType the journal type
      */
     private void checkSelectedType(String selectedType) {
@@ -244,14 +254,12 @@ public class EditorActivity extends AppCompatActivity {
         Log.d(TAG, selectedType);
         switch (selectedType) {
             case "FEELINGS":
-                Log.d(TAG, "FEELINGS");
-                //mJournalTypeRadioGroup.check(R.id.rb_feelings);
-                mFeelingsRadioButton.setChecked(true);
+                mEditor.radioGroupType.check(R.id.radio_feelings);
+                // mEditor.rbFeelings.setChecked(true);
                 break;
             case "THOUGHTS":
-                Log.d(TAG, "THOUGHTS");
-                //mJournalTypeRadioGroup.check(R.id.rb_thought);
-                mThoughtsRadioButton.setChecked(true);
+                mEditor.radioGroupType.check(R.id.radio_thought);
+                //mEditor.rbThought.setChecked(true);
         }
     }
 
@@ -261,10 +269,10 @@ public class EditorActivity extends AppCompatActivity {
      * @return the name of the journal type selected
      */
     private String getSelectedJournalType() {
-        switch (mJournalTypeRadioGroup.getCheckedRadioButtonId()) {
-            case R.id.rb_feelings:
+        switch (mEditor.radioGroupType.getCheckedRadioButtonId()) {
+            case R.id.radio_feelings:
                 return JournalsItem.Type.FEELINGS.toString();
-            case R.id.rb_thought:
+            case R.id.radio_thought:
                 return JournalsItem.Type.THOUGHTS.toString();
             default:
                 return JournalsItem.Type.FEELINGS.toString();

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -6,7 +6,7 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
-    <style name="BaseAppTheme" parent="android:Theme.Material">
+    <style name="BaseAppTheme" parent="android:Theme.Material" tools:keep="@style/BaseAppTheme">
         <!-- enable window content transitions -->
         <item name="android:windowActivityTransitions">true</item>
 

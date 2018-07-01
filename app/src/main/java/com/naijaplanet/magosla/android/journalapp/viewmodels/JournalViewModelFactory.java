@@ -7,8 +7,8 @@ import android.arch.lifecycle.ViewModelProvider;
  *  This class makes it possible to pass values to JournalViewModel
  */
 public class JournalViewModelFactory extends ViewModelProvider.NewInstanceFactory{
-    private String mUserId;
-    private String mJournalKey;
+    private final String mUserId;
+    private final String mJournalKey;
 
     public JournalViewModelFactory(String userId, String journalKey){
         mUserId = userId;

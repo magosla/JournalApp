@@ -1,4 +1,4 @@
-package com.naijaplanet.magosla.android.tinyjournal;
+package com.naijaplanet.magosla.android.journalapp;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -14,6 +14,7 @@ import static org.junit.Assert.*;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
+@SuppressWarnings("SpellCheckingInspection")
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest {
     @Test
@@ -21,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.naijaplanet.magosla.android.tinyjournal", appContext.getPackageName());
+        assertEquals("com.naijaplanet.magosla.android.journalapp", appContext.getPackageName());
     }
 }

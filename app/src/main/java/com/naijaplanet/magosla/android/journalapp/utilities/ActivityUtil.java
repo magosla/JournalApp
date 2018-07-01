@@ -6,13 +6,17 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.transition.Explode;
 import android.view.Window;
 
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.naijaplanet.magosla.android.journalapp.EditorActivity;
 import com.naijaplanet.magosla.android.journalapp.JournalActivity;
-import com.naijaplanet.magosla.android.journalapp.models.User;
+import com.naijaplanet.magosla.android.journalapp.MainActivity;
 
 /**
  * This class provides helper methods for activities
@@ -25,13 +29,15 @@ public class ActivityUtil {
     /**
      * Starts an activity to edit or create journal
      * @param activity the current activity
-     * @param user the user object
+     * //@param user the user object
      * @param journalKey the journal key
      */
-    public static void launchEditor(Activity activity, User user, @Nullable String journalKey) {
+    public static void launchEditor(Activity activity,/* User user,*/ @Nullable String journalKey) {
         Intent editorIntent = new Intent(activity, EditorActivity.class);
-        editorIntent.putExtra(Values.USER_INTENT_DATA_KEY, user);
-        editorIntent.putExtra(Values.INTENT_JOURNAL_ID_KEY, journalKey != null ? journalKey : Values.JOURNAL_ID_NONE);
+        // put the User object
+        //editorIntent.putExtra(Values.USER_INTENT_DATA_KEY, user);
+        // put the journal key if available
+        editorIntent.putExtra(Values.EXTRA_JOURNAL_KEY, journalKey != null ? journalKey : Values.JOURNAL_ID_NONE);
         activity.startActivity(editorIntent);
     }
 
@@ -39,13 +45,16 @@ public class ActivityUtil {
     /**
      * Starts an activity to open the journal detail
      * @param activity the current activity
-     * @param user the user object
+     * //@param user the user object
      * @param journalKey the journal key
      */
-    public static void launchJournal(Activity activity, User user, @Nullable String journalKey){
+    public static void launchJournal(Activity activity,/* User user,*/ @Nullable String journalKey){
         Intent journalIntent = new Intent(activity, JournalActivity.class);
-        journalIntent.putExtra(Values.USER_INTENT_DATA_KEY, user);
-        journalIntent.putExtra(Values.INTENT_JOURNAL_ID_KEY, journalKey);
+        // send the user object
+       // journalIntent.putExtra(Values.USER_INTENT_DATA_KEY, user);
+
+        // send the journal key
+        journalIntent.putExtra(Values.EXTRA_JOURNAL_KEY, journalKey);
         activity.startActivity(journalIntent, getTransitionsBundle(activity));
     }
 
@@ -59,6 +68,7 @@ public class ActivityUtil {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private static Bundle getTransitionsBundle(Activity activity){
         Bundle bundle = null;
+        // if enableTransition has been called and the device SDK support transition
         if(mCalledTransitionEnable && mTransitionEnabled) {
             bundle = ActivityOptions.makeSceneTransitionAnimation(activity).toBundle();
         }
@@ -87,5 +97,22 @@ public class ActivityUtil {
             }
         }
 
+    }
+
+
+    /**
+     * Sign out the user from App
+     */
+    public static void signOut(final Activity activity) {
+        AuthUI.getInstance().signOut(activity).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Values.clearUserInPreference(activity);
+                Intent intent = new Intent(activity, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                activity.startActivity(intent);
+                activity.finish();
+            }
+        });
     }
 }
