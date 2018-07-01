@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'JournalApp'
             keyPassword 'wetass01'
-            storeFile file('C:/Users/mag/mag_keys/journalappp.jks')
+            storeFile file('journalapp.jks')
             storePassword 'wetass011'
         }
     }
@@ -21,7 +21,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
         }
@@ -34,6 +34,8 @@ android {
     }
     lintOptions {
         abortOnError false
+    }
+    productFlavors {
     }
 }
 

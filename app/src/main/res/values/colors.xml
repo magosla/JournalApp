@@ -13,4 +13,5 @@
     <color name="color_gray">#cccccc</color>
     <color name="background">#d0d0d0</color>
     <color name="color_title">#808080</color>
+    <color name="color_black">#000000</color>
 </resources>

@@ -8,7 +8,7 @@ First you would need to [Download](https://github.com/magosla/JournalApp/blob/ma
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+To run the app for the first time prior to being signed-in you must have an internet connection for the app to run
 
 ####Demo account
 Select signin by email and use the signin credentials below
