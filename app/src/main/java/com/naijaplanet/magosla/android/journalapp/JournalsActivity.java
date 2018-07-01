@@ -131,7 +131,7 @@ public class JournalsActivity extends AppCompatActivity
             signOut();
         }
         // start the Editor activity
-        else if (id == R.id.drawer_create) launchEditor(null);
+        else if (id == R.id.drawer_create) launchEditor();
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -156,7 +156,7 @@ public class JournalsActivity extends AppCompatActivity
             // this identifies the long click action from the journals list item
             // as we want to Edit the journal while this happens
             case R.id.journal_item_layout:
-                launchEditor(v.getTag().toString());
+                    deleteJournal(v.getTag().toString());
                 return true;
         }
         return false;
@@ -242,7 +242,7 @@ public class JournalsActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launchEditor(null);
+                launchEditor();
             }
         });
     }
@@ -271,10 +271,9 @@ public class JournalsActivity extends AppCompatActivity
      * Lunches an Activity to Edit the journal if the journalKey is not null or
      * an Activity to create a new journal if journalKey is null
      *
-     * @param journalKey this key that identifies  the journal.
      */
-    private void launchEditor(@Nullable String journalKey) {
-        ActivityUtil.launchEditor(this, journalKey);
+    private void launchEditor() {
+        ActivityUtil.launchEditor(this, null);
     }
 
     /**
@@ -284,6 +283,16 @@ public class JournalsActivity extends AppCompatActivity
      */
     private void launchJournal(@NonNull String journalKey) {
         ActivityUtil.launchJournal(this, journalKey);
+    }
+
+    /**
+     * Deletes a journal with provided journalkey
+     * @param journalKey the journal key
+     */
+    private void deleteJournal(@NonNull String journalKey){
+         if(mUser != null && !journalKey.isEmpty()) {
+             ActivityUtil.deleteJournal(this, mUser.getId(), journalKey, null);
+         }
     }
 
     /**
