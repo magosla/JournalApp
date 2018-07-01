@@ -17,6 +17,7 @@ import com.naijaplanet.magosla.android.journalapp.databinding.ActivityJournalBin
 import com.naijaplanet.magosla.android.journalapp.models.Journal;
 import com.naijaplanet.magosla.android.journalapp.models.User;
 import com.naijaplanet.magosla.android.journalapp.utilities.ActivityUtil;
+import com.naijaplanet.magosla.android.journalapp.utilities.FirebaseUtil;
 import com.naijaplanet.magosla.android.journalapp.utilities.Values;
 import com.naijaplanet.magosla.android.journalapp.viewmodels.JournalViewModel;
 import com.naijaplanet.magosla.android.journalapp.viewmodels.JournalViewModelFactory;
@@ -82,11 +83,16 @@ public class JournalActivity extends AppCompatActivity {
      * deletes the journal from database
      */
     private void delete() {
-        ViewModelProviders.
-                of(this, new JournalViewModelFactory(mUser.getId(), mJournalKey))
-                .get(JournalViewModel.class).deleteEntry();
+
+        if(mUser != null && !mUser.getId().isEmpty() && !mJournalKey.isEmpty()) {
+            FirebaseUtil.deleteItem(mUser.getId(), mJournalKey, new FirebaseUtil.OnCompletionListener() {
+                @Override
+                public void onComplete(boolean encounteredError) {
+                    finish();
+                }
+            });
+        }
         Toast.makeText(this, R.string.msg_journal_deleted, Toast.LENGTH_SHORT).show();
-        finish();
     }
 
     /**
@@ -99,6 +105,10 @@ public class JournalActivity extends AppCompatActivity {
         //User user = getIntent().getParcelableExtra(Values.EXTRA_USER);
         // get the user object from preference
         mUser = Values.getUserFromPreference(this);
+        if(mUser == null){
+            ActivityUtil.signOut(this);
+            return;
+        }
 
         final JournalViewModel journalViewModel = ViewModelProviders.
                 of(this, new JournalViewModelFactory(mUser.getId(), mJournalKey))
