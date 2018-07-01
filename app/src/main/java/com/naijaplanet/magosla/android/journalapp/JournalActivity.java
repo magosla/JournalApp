@@ -55,21 +55,7 @@ public class JournalActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_delete:
-                new AlertDialog.Builder(this)
-                        .setTitle(R.string.title_delete_confirm)
-                        .setMessage(R.string.msg_delete_confirm)
-                        .setNegativeButton(R.string.action_no, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .setPositiveButton(R.string.action_yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                delete();
-                            }
-                        }).show();
+                delete();
                 return true;
             case R.id.menu_edit:
                 ActivityUtil.launchEditor(JournalActivity.this, mJournalKey);
@@ -85,8 +71,13 @@ public class JournalActivity extends AppCompatActivity {
     private void delete() {
 
         if(mUser != null && !mJournalKey.isEmpty()) {
-            FirebaseUtil.deleteItem(mUser.getId(), mJournalKey, null);
-            Toast.makeText(this, R.string.msg_journal_deleted, Toast.LENGTH_SHORT).show();
+            ActivityUtil.deleteJournal(this, mUser.getId(), mJournalKey, new FirebaseUtil.OnCompletionListener() {
+                @Override
+                public void onComplete(boolean encounteredError) {
+                    finish();
+                    Toast.makeText(getApplicationContext(), R.string.msg_journal_deleted, Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
