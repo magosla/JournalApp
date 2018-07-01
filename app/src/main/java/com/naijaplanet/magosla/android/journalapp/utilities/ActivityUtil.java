@@ -131,7 +131,7 @@ public class ActivityUtil {
      * @param callback   callback called when action is complete
      */
     public static void deleteJournal(Context context, @NonNull final String userId
-            , @NonNull final String journalKey, @Nullable final FirebaseUtil.OnCompletionListener callback) {
+            , @NonNull final String journalKey, final FirebaseUtil.OnCompletionListener callback) {
 
         new AlertDialog.Builder(context)
                 .setTitle(R.string.title_delete_confirm)
