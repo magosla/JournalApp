@@ -30,12 +30,7 @@ public class JournalsViewModel extends ViewModel {
 
     @SuppressWarnings("WeakerAccess")
     public JournalsViewModel(String userId){
-
-
-        String databasePath = String.format("%s/%s", Values.JOURNAL_DATABASE_PATH,userId);
-        Log.d(this.getClass().getSimpleName(),databasePath);
-        mDatabaseRef = FirebaseUtil.getFirebaseDatabase().getReference()
-                .child(databasePath);
+        mDatabaseRef = FirebaseUtil.getJournalsRef(userId);
 
         configureListeners();
     }
