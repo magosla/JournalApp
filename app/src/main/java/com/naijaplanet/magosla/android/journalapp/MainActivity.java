@@ -1,10 +1,14 @@
 package com.naijaplanet.magosla.android.journalapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -25,9 +29,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Try and enable transitions between activities
-        //ActivityUtil.enableTransition(this);
 
         initializeAuthentication();
     }
@@ -73,6 +74,29 @@ public class MainActivity extends AppCompatActivity {
             goToJournalsActivity();
             return;
         }
+        if (hasInternetConnection()) {
+            tryAuthenticate();
+        } else {
+            noInternetView();
+        }
+
+    }
+
+    /**
+     * Let the user know an internet is required
+     */
+    private void noInternetView() {
+        setContentView(R.layout.activity_main);
+
+        findViewById(R.id.button_retry).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                retryLogin();
+            }
+        });
+    }
+
+    private void tryAuthenticate() {
         mFirebaseAuth = FirebaseAuth.getInstance();
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -93,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-
     }
 
 
@@ -124,7 +147,30 @@ public class MainActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
                 | Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
-        // finish();
+        finish();
     }
 
+    /**
+     * Checks is the device has an internet connection
+     *
+     * @return the connection status
+     */
+    private boolean hasInternetConnection() {
+
+        ConnectivityManager connectionManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectionManager != null ?
+                connectionManager.getActiveNetworkInfo() : null;
+
+        return (networkInfo != null && networkInfo.isConnected());
+    }
+
+    public void retryLogin() {
+        if (hasInternetConnection()) {
+            tryAuthenticate();
+            mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+        } else {
+            Toast.makeText(this, R.string.msg_cannot_connect, Toast.LENGTH_SHORT)
+                    .show();
+        }
+    }
 }
