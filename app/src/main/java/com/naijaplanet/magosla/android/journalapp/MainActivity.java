@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
         return (networkInfo != null && networkInfo.isConnected());
     }
 
-    public void retryLogin() {
+    private void retryLogin() {
         if (hasInternetConnection()) {
             tryAuthenticate();
             mFirebaseAuth.addAuthStateListener(mAuthStateListener);
