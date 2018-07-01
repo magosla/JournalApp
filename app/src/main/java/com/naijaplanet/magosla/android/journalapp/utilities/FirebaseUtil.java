@@ -57,7 +57,7 @@ public class FirebaseUtil {
         });
     }
 
-    @SuppressWarnings("WeakerAccess")
+    @SuppressWarnings({"WeakerAccess", "unused"})
     public interface OnCompletionListener {
         // just basic, no checking if it was a success or not
 
