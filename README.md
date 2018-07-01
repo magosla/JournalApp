@@ -10,7 +10,7 @@ First you would need to [Download](https://github.com/magosla/JournalApp/blob/ma
 
 To run the app for the first time prior to being signed-in you must have an internet connection for the app to run
 
-###Demo account
+#### Demo account
 
 Select sign in by email and use the sign in credentials below:
 ````
