@@ -10,7 +10,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.naijaplanet.magosla.android.journalapp.data.FirebaseLiveData;
 import com.naijaplanet.magosla.android.journalapp.models.Journal;
 import com.naijaplanet.magosla.android.journalapp.utilities.FirebaseUtil;
-import com.naijaplanet.magosla.android.journalapp.utilities.Values;
 
 /**
  * The Journal ViewModel
@@ -27,20 +26,11 @@ public class JournalViewModel extends ViewModel {
     public JournalViewModel(String userId, String journalKey){
         // the path to the data in firebase, which is determined by the
         // App User's ID and the journalKey
-        String databasePath = String
-                .format("%s/%s/%s", Values.JOURNAL_DATABASE_PATH,userId, journalKey);
-
-        mDatabaseRef = FirebaseUtil.getFirebaseDatabase().getReference(databasePath);
+        mDatabaseRef = FirebaseUtil.getJournalRef(userId, journalKey);
 
         configureListener();
     }
 
-    /**
-     * Delete the entry
-     */
-    public void deleteEntry(){
-        mDatabaseRef.getRef().removeValue();
-    }
 
     /**
      * Configure how the view model listens to data from the data source
