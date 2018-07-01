@@ -52,7 +52,7 @@ public class EditorActivity extends AppCompatActivity {
         // get the user object stored in shared preference
         mUser = Values.getUserFromPreference(this);
         // if we encounter an empty Userid, we should sign-out
-        if (mUser == null || mUser.getId().isEmpty()) {
+        if(mUser == null){
             ActivityUtil.signOut(this);
             return;
         }
@@ -201,9 +201,7 @@ public class EditorActivity extends AppCompatActivity {
      */
     private void saveJournal() {
 
-        final DatabaseReference userJournalDatabaseRef =
-                FirebaseUtil.getFirebaseDatabase().getReference()
-                        .child(String.format("%s/%s", Values.JOURNAL_DATABASE_PATH, mUser.getId()));
+        final DatabaseReference userJournalDatabaseRef = FirebaseUtil.getJournalsRef(mUser.getId());
 
         DatabaseReference ref;
         if (mJournal == null) {
