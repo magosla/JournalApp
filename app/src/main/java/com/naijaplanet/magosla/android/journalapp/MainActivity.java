@@ -96,6 +96,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Tries to authenticate the user if there is internet connection
+     */
     private void tryAuthenticate() {
         mFirebaseAuth = FirebaseAuth.getInstance();
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -164,6 +167,9 @@ public class MainActivity extends AppCompatActivity {
         return (networkInfo != null && networkInfo.isConnected());
     }
 
+    /**
+     * Tries get the login form
+     */
     private void retryLogin() {
         if (hasInternetConnection()) {
             tryAuthenticate();
