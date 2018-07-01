@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -84,15 +85,10 @@ public class JournalActivity extends AppCompatActivity {
      */
     private void delete() {
 
-        if(mUser != null && !mUser.getId().isEmpty() && !mJournalKey.isEmpty()) {
-            FirebaseUtil.deleteItem(mUser.getId(), mJournalKey, new FirebaseUtil.OnCompletionListener() {
-                @Override
-                public void onComplete(boolean encounteredError) {
-                    finish();
-                }
-            });
+        if(mUser != null && !mJournalKey.isEmpty()) {
+            FirebaseUtil.deleteItem(mUser.getId(), mJournalKey, null);
+            Toast.makeText(this, R.string.msg_journal_deleted, Toast.LENGTH_SHORT).show();
         }
-        Toast.makeText(this, R.string.msg_journal_deleted, Toast.LENGTH_SHORT).show();
     }
 
     /**
