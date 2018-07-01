@@ -62,7 +62,7 @@ public class JournalsActivity extends AppCompatActivity
         // get the user from sharedpreference
         mUser = Values.getUserFromPreference(this);
 
-        if (mUser == null || mUser.getId().isEmpty()) {
+        if (mUser == null) {
             ActivityUtil.signOut(this);
             return;
         }
