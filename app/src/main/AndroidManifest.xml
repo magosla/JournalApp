@@ -26,7 +26,7 @@
         <activity
             android:name=".JournalActivity"
             android:label="@string/journal"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".JournalsActivity"/>
         <activity
             android:name=".EditorActivity"
             android:label="@string/add_journal"

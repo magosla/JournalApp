@@ -48,9 +48,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:backgroundTint="@android:color/transparent"
+                android:fadeScrollbars="true"
+                android:fadingEdge="vertical|horizontal"
                 android:gravity="top|start"
                 android:hint="@string/journal_content"
-                android:inputType="textMultiLine"
+                android:inputType="textMultiLine|textWebEditText"
                 android:textColorHint="@color/color_gray"
                 tools:targetApi="lollipop" />
         </android.support.design.widget.TextInputLayout>

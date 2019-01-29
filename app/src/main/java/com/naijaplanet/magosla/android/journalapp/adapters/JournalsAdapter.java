@@ -3,31 +3,54 @@ package com.naijaplanet.magosla.android.journalapp.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.util.SortedList;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.util.SortedListAdapterCallback;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.naijaplanet.magosla.android.journalapp.R;
+import com.naijaplanet.magosla.android.journalapp.models.Journal;
 import com.naijaplanet.magosla.android.journalapp.models.JournalsItem;
 import com.naijaplanet.magosla.android.journalapp.utilities.Values;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.SortedMap;
 
-public class JournalsAdapter extends RecyclerView.Adapter<JournalsAdapter.JournalViewHolder> {
+public class JournalsAdapter extends RecyclerView.Adapter<JournalViewHolder> {
 
     private final Context context;
     private final ItemListeners mItemListeners;
     private List<JournalsItem> mJournals;
+/**
+    private SortedList<JournalsItem> sortedJournalsItem =
+            new SortedList<JournalsItem>(JournalsItem.class, new SortedListAdapterCallback<JournalsItem>(JournalsAdapter) {
+        @Override
+        public int compare(JournalsItem o1, JournalsItem o2) {
+            return 0;
+        }
 
+        @Override
+        public boolean areContentsTheSame(JournalsItem oldItem, JournalsItem newItem) {
+            return false;
+        }
+
+        @Override
+        public boolean areItemsTheSame(JournalsItem item1, JournalsItem item2) {
+            return false;
+        }
+    });
+*/
     private final SimpleDateFormat dateFormatter = new SimpleDateFormat(Values.DATE_FORMAT, Locale.getDefault());
 
-    public interface ItemListeners {
+    public static interface ItemListeners {
         void onItemClickListener(View v);
 
         boolean onItemLongClickListener(View v);
@@ -49,14 +72,13 @@ public class JournalsAdapter extends RecyclerView.Adapter<JournalsAdapter.Journa
                 .inflate(viewType, parent, false);
 
 
-        return new JournalViewHolder(view);
+        return new JournalViewHolder(view, mItemListeners);
     }
 
     @Override
     public void onBindViewHolder(@NonNull JournalViewHolder holder, int position) {
 
         holder.bind(mJournals.get(position));
-
     }
 
 
@@ -83,62 +105,10 @@ public class JournalsAdapter extends RecyclerView.Adapter<JournalsAdapter.Journa
         notifyDataSetChanged();
     }
 
-    class JournalViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener, View.OnCreateContextMenuListener
-    {
-        private final TextView mTitleView;
-        private final TextView mTimestampView;
-        private final TextView mJournalTypeView;
-        private final ImageView mTypeImageView;
-
-        private JournalViewHolder(View itemView) {
-            super(itemView);
-            mTitleView = itemView.findViewById(R.id.text_title);
-            mTimestampView = itemView.findViewById(R.id.text_datetime);
-            mTypeImageView = itemView.findViewById(R.id.image_journal_type);
-            mJournalTypeView = itemView.findViewById(R.id.text_journal_type);
-            itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
-           // context.registerForContextMenu(itemView);
-        }
-
-        private void bind(JournalsItem journalsItem) {
-            // Store the key to identify item
-            itemView.setTag(journalsItem.getKey());
-            itemView.setTag(R.id.journal_item_layout, 24);
-
-            mTitleView.setText(journalsItem.getTitle());
-
-            mJournalTypeView.setText(journalsItem.getType());
-
-            // display creation time only if the journal is not edited
-            Long timestamp = journalsItem.getEditTimestamp() > 0
-                    ? journalsItem.getEditTimestamp() : journalsItem.getTimestamp();
-
-            mTimestampView.setText(
-                    dateFormatter.format(timestamp)
-            );
-            mTypeImageView.setContentDescription(
-                    String.format("%s is a %s", journalsItem.getTitle(), journalsItem.getType().toLowerCase())
-            );
-
-        }
-
-        @Override
-        public void onClick(View v) {
-            mItemListeners.onItemClickListener(v);
-        }
-
-        @Override
-        public boolean onLongClick(View v) {
-            return mItemListeners.onItemLongClickListener(v);
-        }
-
-        // TODO: - Implement a Context menu instead of directly editing after a long click
-        @SuppressWarnings("unused")
-        @Override
-        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            //mItemListeners.onCreateContextMenu(menu, v, menuInfo);
-        }
-
+    @Override
+    public long getItemId(int position) {
+        // this could be made to return the ItemId as key
+        return super.getItemId(position);
     }
+
 }
