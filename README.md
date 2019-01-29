@@ -17,24 +17,16 @@ To run the app for the first time prior to being signed-in you must have an inte
 #### Demo account
 
 Select sign in by email and use the sign in credentials below:
-````
-Email: demo@journalapp.com
-````
-````
-Password: demopass
-````
+| Login Credentials||
+|:---|:---:|
+| __Email:__ | `demo@journalapp.com` |
+| __Password:__ | `demopass` |
 
 ### Installing
 
 To install the app, first download the apk file to your device with the link provided above, 
 then open the file from your device and follow the installation steps provided by your device application installer.
 Also, ensure that you have enabled your application to install application from unknown source
-
-## Running the tests
-Basic UI test has been written Espresso, but the result has'nt been consistent because the Activities are behind a login  
-
-Explain how to run the automated tests for this system
-
 
 ## Deployment
 
