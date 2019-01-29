@@ -17,7 +17,8 @@ To run the app for the first time prior to being signed-in you must have an inte
 #### Demo account
 
 Select sign in by email and use the sign in credentials below:
-| Login Credentials||
+
+| Login Credentials| |
 |:---|:---:|
 | __Email:__ | `demo@journalapp.com` |
 | __Password:__ | `demopass` |
