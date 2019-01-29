@@ -1,6 +1,6 @@
 # Journal App
 
-This is an Android application that enable its users pen down their thoughts and feelings. It is a portable journal for everyday use 
+This is an Android application that enable its users pen down their thoughts and feelings. It is a portable journal for everyday use.
 
 ## Getting Started
 
@@ -39,9 +39,6 @@ Must be deployed to a Device running on Android Operating System. The APK file f
 * [Gradle](https://gadle.org/) - Dependency Management
 * [Android Studio 3.1.3](https://developer.android.com/studio/) - IDE
 
-## Versioning
-
-We use [Git](https://git-scm.com/) for versioning. For the versions available, see the [tags on this repository](https://github.com/magosla/JournalApp/tags). 
 
 ## Authors
 
